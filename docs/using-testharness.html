@@ -1,10 +1,12 @@
-<!DOCTYPE html>  <html> <head>   <title>using-testharness.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               using-testharness.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <script src='../js/testharness.js'></script>
+<!DOCTYPE html>  <html> <head>   <title>using-testharness.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               using-testharness.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p><!--</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*global test assert_true assert_false*/</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>--></p>
+
+<script src='../js/testharness.js'></script>
+
+<script src='../js/move-log.js'></script>
 
 <script src='../using-testharness.js'></script>
 
-<p><style>
- /* here we position the results #log so that it spans the whole width */
-</style>
+<p><link rel='stylesheet' href='../js/testharness.css'>
 This document provides a tutorial for W3C's test framework, known as <code>testharness.js</code>,
 which you can download from <a href="https://github.com/jgraham/testharness.js">its GitHub repository</a>.</p>
 
@@ -26,7 +28,7 @@ to the bottom, you will see the results of this run.</p>
 
 <p>This documentation was generated using <a href="http://jashkenas.github.com/docco/">Docco</a>, and the
 idea behind the way in which it is done is shamelessly stolen from the
-<a href="http://pivotal.github.com/jasmine/">Jasmine Documentation</a>.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2>Getting started</h2>
+<a href="http://pivotal.github.com/jasmine/">Jasmine Documentation</a>.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h2>Getting Started</h2>
 
 <p>Let's get started with this code! The first thing you need to do to load <code>testharness.js</code>
 is to include it from a <code>script</code> element in the usual way. You can either download your
@@ -46,9 +48,69 @@ they may be using internally.</p>
 
 <p>If you wish the HTML page into which your tests are being run to render results in a nice
 and convenient table, you should include an HTML element with ID <code>log</code> where you would
-like those results to appear. See the bottom of this document for an example.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Then the JavaScript you'll use can start.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+like those results to appear. See the bottom of this document for an example.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h2>Basic Testing</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>The most basic usage relies on the <code>test()</code> function, which takes a function with the code
+to run, a name of the test, and optionally a literal object providing some additional
+options.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">test</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">assert_true</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="p">},</span> <span class="s2">&quot;True really is true&quot;</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>The given function <em>must</em> include at least one assertion; conversely, assertions
+can only appear in the context of a test function.
+A single test may contain multiple assertions, in which case it is considered to be atomic.
+That is to say that a single failed assertion will fail the test, whereas all are required
+to pass for the whole test to pass. A document can contain as many tests as you wish it
+to.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>The example here contains two assertions, both of which pass.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">test</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">assert_true</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    <span class="nx">assert_false</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<span class="p">},</span> <span class="s2">&quot;Truth is what you believe it to be&quot;</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>But in this example one passes, while the other fails. This causes the entire test to be reported
+as a failure.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">test</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">assert_true</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    <span class="nx">assert_false</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="p">},</span> <span class="s2">&quot;All opinions are equally valid.&quot;</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>In addition to a function and a name, <code>test()</code> can also accept a third parameter being a dictionary
+of options. Most of those options are documented in the <a href="#metadata">Including Metadata</a> section
+below.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>The only general-purpose option that you can use is <code>timeout</code>. It takes a number of milliseconds
+(defaulting to 1000, which the brightest at maths amongst you will have recognised as being equivalent
+to one second). If the content of the test takes longer than <code>timeout</code> to run then the test is aborted
+and counted as a fail. Since some processing can take longer than one second to run, especially if
+you are performing a complex test in a low-end environment (e.g. a basic mobile phone) it can at
+times be useful to increase this limit as exemplified here.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">test</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="cm">/* do something long and slow here */</span>
+    <span class="nx">assert_true</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="p">},</span> <span class="s2">&quot;Long operation is successful&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">timeout</span><span class="o">:</span> <span class="mi">5000</span> <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Note that you do not want to use this for asynchronous operations (if only because it won't work).
+For those, see the section dedicated to that topic below.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <h2>Included Assertions</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>There is a good choice of assertions available by default. Most of those take the form
+<code>assert_something(actual, expected, description)</code> but several have different signatures.
+When a <code>description</code> is part of the signature, it is optional and a string intended for
+human consumption in order to provide a better description of which assertion exactly
+failed. If you don't provide it, you will get a default error message instead.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p><code>assert_true(actual, description)</code> checks that <code>actual</code> is <em>strictly</em> equal to <code>true</code>,
+which is to say that it <em>has</em> to be the JavaScript <code>true</code> value and not just someting
+that evaluates as "truthy" such as <code>1</code> or <code>"dahut"</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">test</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">assert_true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="s2">&quot;Truth is true&quot;</span><span class="p">);</span>
+    <span class="nx">assert_true</span><span class="p">(</span><span class="mi">1</span> <span class="o">===</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;One is really one&quot;</span><span class="p">);</span>
+<span class="p">},</span> <span class="s2">&quot;Simple checks on truth&quot;</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p><code>assert_false(actual, description)</code>
+<code>assert_equals(actual, expected, description)</code>
+<code>assert_not_equals(actual, expected, description)</code>
+<code>assert_in_array(actual, expected, description)</code>
+<code>assert_array_equals(actual, expected, description)</code>
+<code>assert_approx_equals(actual, expected, epsilon, description)</code>
+<code>assert_regexp_match(actual, expected, description)</code>
+<code>assert_own_property(object, property_name, description)</code>
+<code>assert_inherits(object, property_name, description)</code>
+<code>assert_idl_attribute(object, attribute_name, description)</code>
+<code>assert_readonly(object, property_name, description)</code>
+<code>assert_throws(code, func, description)</code>
+<code>assert_unreached(description)</code></p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <h2>Asynchronous Testing</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     
-<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h2>Results</h2>
+<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p><a name='metadata'></a></p>
+
+<h2>Including Metadata</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    
+<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <h2>Advanced Usage</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    
+<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <h2>Generating Tests</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    
+<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <h2>Writing Your Own Assertions</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    
+<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <h2>Callbacks</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    
+<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <h2>Results</h2>
 
 <p>As promised this is a self-runnable document that includes the results for the test suite
 specified by the code in the right column above. You can see the results below:</p>
