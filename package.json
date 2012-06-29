@@ -1,0 +1,15 @@
+{
+    "name": "test-harness-tutorial"
+,   "description": "Tutorial for testharness.js"
+,   "version": "0.0.1"
+,   "author": {
+        "name": "Robin Berjon"
+    ,   "email": "robin@berjon.com"
+    ,   "url": "http://berjon.com"
+    }
+,   "dependencies": {
+        "grunt":        "*"
+    ,   "docco":        "*"
+    ,   "grunt-docco":  "0.1.1"
+    }
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>  <html> <head>   <title>using-testharness.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               using-testharness.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <script src='../js/testharness.js'></script>
+
+<script src='../using-testharness.js'></script>
+
+<p><style>
+ /* here we position the results #log so that it spans the whole width */
+</style>
+This document provides a tutorial for W3C's test framework, known as <code>testharness.js</code>,
+which you can download from <a href="https://github.com/jgraham/testharness.js">its GitHub repository</a>.</p>
+
+<p>This tutorial does not assume that you are necessarily familiar with other test frameworks,
+but it does expect you to be reasonably proficient with JavaScript (since JavaScript APIs is
+what one tests using this).</p>
+
+<p>If you are familiar with other test frameworks such as <a href="http://docs.jquery.com/QUnit">QUnit</a>,
+<a href="http://visionmedia.github.com/mocha/">Mocha</a>, or <a href="http://pivotal.github.com/jasmine/">Jasmine</a>
+then you should find your way around here relatively easily.</p>
+
+<p>Indeed, <code>testharness.js</code> is not very different from those, though it does have a number of
+features that make it particularly well suited to testing APIs implemented by the browser
+and exposed <em>to</em> JavaScript rather than those created in JavaScript directly.</p>
+
+<p>This tutorial is actually designed to be runnable. The code you see in the right column
+is described on the left, but it is also ran as soon as you load this page. If you scroll
+to the bottom, you will see the results of this run.</p>
+
+<p>This documentation was generated using <a href="http://jashkenas.github.com/docco/">Docco</a>, and the
+idea behind the way in which it is done is shamelessly stolen from the
+<a href="http://pivotal.github.com/jasmine/">Jasmine Documentation</a>.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2>Getting started</h2>
+
+<p>Let's get started with this code! The first thing you need to do to load <code>testharness.js</code>
+is to include it from a <code>script</code> element in the usual way. You can either download your
+own copy and set it up locally whichever way you want, or if you're writing a test for
+a W3C service you should just point to the W3C copy:</p>
+
+<pre><code>  &lt;script src='http://w3c-test.org/resources/testharness.js'&gt;&lt;/script&gt;
+  &lt;script src='http://w3c-test.org/resources/testharnessreport.js'&gt;&lt;/script&gt;
+</code></pre>
+
+<p>At which point you might rightfully ask why there are two files. The reason for this is
+simple: the first one is the actual implementations, and the second one is empty. Why
+include an empty file? The idea is that when a specific vendor checks your test suite
+out, they can override the content of the <code>testharnessreport.js</code> file. This makes it
+possible for them to integrate running the test suite with whatever test reporting tool
+they may be using internally.</p>
+
+<p>If you wish the HTML page into which your tests are being run to render results in a nice
+and convenient table, you should include an HTML element with ID <code>log</code> where you would
+like those results to appear. See the bottom of this document for an example.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Then the JavaScript you'll use can start.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    
+<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h2>Results</h2>
+
+<p>As promised this is a self-runnable document that includes the results for the test suite
+specified by the code in the right column above. You can see the results below:</p>
+
+<div id='log'></div>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
