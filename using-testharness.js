@@ -3,7 +3,7 @@
          assert_array_equals assert_approx_equals assert_regexp_match assert_own_property
          assert_inherits assert_idl_attribute assert_readonly assert_throws assert_unreached
          assert_object_equals async_test setup format_value done timeout someIFrame
-         generate_tests*/
+         generate_tests add_start_callback add_result_callback add_complete_callback*/
 // -->
 // <script src='../js/testharness.js'></script>
 // <script src='../js/move-log.js'></script>
@@ -255,19 +255,19 @@ test(function () {
                   "Specific DOM exception.");
 }, "Checks for exceptions (string)");
 
+// <!--
 // `assert_object_equals(actual, expected, description)` checks that two objects are equal by deep-walking
 // them side by side and making sure that they have the same fields and that those fields have the same
 // values. It is still considered somewhat experimental.
-test(function () {
-    assert_object_equals({ foo: "bar" },
-                         { foo: "bar" },
-                         "Simple objects.");
-    assert_object_equals({ top: "here", kids: { list: ["stuff", { leaf: true } ]} },
-                         { top: "here", kids: { list: ["stuff", { leaf: true } ]} },
-                         "Simple objects.");
-}, "Checks object deep-equality");
-
-
+// test(function () {
+//     assert_object_equals({ foo: "bar" },
+//                          { foo: "bar" },
+//                          "Simple objects.");
+//     assert_object_equals({ top: "here", kids: { list: ["stuff", { leaf: true } ]} },
+//                          { top: "here", kids: { list: ["stuff", { leaf: true } ]} },
+//                          "Simple objects.");
+// }, "Checks object deep-equality");
+// -->
 // `assert_unreached(description)` is a very simple assertion the role of which is to
 // check that some code is indeed unreachable. It only takes a description, and simply
 // always throws its hands up in disgust whenever it is called. Opposite here you
@@ -450,15 +450,61 @@ generate_tests(assert_equals, [
 );
 
 // ## Callbacks
-(function () {
-    
-}());
+// At times it can be useful to know what is going on inside the test harness so that you can react to it
+// and build your own behaviour (for instance, producing your own reports or integrating with a larger
+// testing system that you may be using).
+//
+// For that purpose, `testharness.js` provides a set of events that you can be informed of if you so
+// desire.
+// The first way in which you can be notified of these events is, if you are in the same context as the
+// tests being run and can run code before they start, to simply register some callbacks.
+// The second way to be notified is if you are running the test in its own iframe (or object element)
+// contained in the document that is your context (any level down) by creating a function with a
+// specific name that will be called for you. (Be careful with this latter approach that these calls
+// will not happen across origin boundaries).
 
+// `start`. Setup has happened and the first test has been created. This is the point at which your
+// wrapper can do its own setup.
+/* in same context */
+add_start_callback(function () {
+    console.log("The tests have started running.");
+});
+/* in enclosing context */
+function start_callback () {
+    console.log("The tests have started running.");
+}
+
+// `result`. Happens whenever a result is produced. It receives a `Test` object that has a `status`
+// field which can be compared to the `PASS`, `FAIL`, `TIMEOUT`, or `NOTRUN` fields on the same
+// object, meaning respectively that the test has passed, failed, timed out, or hasn't run at all;
+// and a `message` field providing the error message, if any.
+/* in same context */
+add_result_callback(function (res) {
+    console.log("Result received", res);
+});
+/* in enclosing context */
+function result_callback (res) {
+    console.log("Result received", res);
+}
+
+// `complete`. Happens when the test run has terminated (successfully or not). It receives an array
+// of `Test` objects just like the one passed to `result` corresponding to all the results, and
+// a status object describing the state of the entire run, which has a `status` field which can
+// be compared to the `OK`, `ERROR`, and `TIMEOUT` fields on any `Test` object and respectively
+// mean that the suite has entirely succeeded, that it has failed, or that there has been a
+// time out.
+/* in same context */
+add_complete_callback(function (allRes, status) {
+    console.log("Test run completed", allRes, status);
+});
+/* in enclosing context */
+function complete_callback (allRes, status) {
+    console.log("Test run completed", allRes, status);
+}
+
+// <!--
 // ## Writing Your Own Assertions
-(function () {
-    
-}());
-
+// -->
 //## Results
 // As promised this is a self-runnable document that includes the results for the test suite
 // specified by the code in the right column above. You can see the results below:
