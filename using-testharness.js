@@ -2,10 +2,12 @@
 /*global test assert_true assert_false assert_equals assert_not_equals assert_in_array
          assert_array_equals assert_approx_equals assert_regexp_match assert_own_property
          assert_inherits assert_idl_attribute assert_readonly assert_throws assert_unreached
-         assert_object_equals async_test*/
+         assert_object_equals async_test setup format_value done timeout someIFrame
+         generate_tests*/
 // -->
 // <script src='../js/testharness.js'></script>
 // <script src='../js/move-log.js'></script>
+// <iframe id='someIFrame' style='display: none'></iframe>
 // <script src='../using-testharness.js'></script>
 // <link rel='stylesheet' href='../js/testharness.css'>
 // This document provides a tutorial for W3C's test framework, known as `testharness.js`,
@@ -330,27 +332,129 @@ xhr.send();
 
 // <a name='metadata'></a>
 // ## Including Metadata
-(function () {
-    
-}());
+
+// If you are writing tests for inclusion in the [W3C Testing Framework](http://w3c-test.org/framework/app/)
+// (and if you're writing those tests for a W3C group, then you really should), then this section can be
+// of interest to you. If not, you can safely skip it.
+
+// In order to best integrate into the Testing Framework, your tests ought to have metadata. If you have only
+// one test per HTML file, then your test metadata should be contained in the &lt;head> section of your
+// document and, again, you can safely skip over this section. If, however, you wish to include an entire
+// test suite in a single document (which you certainly can do) then it is useful to specify test metadata
+// for every call to `test()`.
+
+// This can be achieved very simply by providing the test metadata as part of the third parameter to `test()`
+// which we have seen earlier. There are three fields that you can use: `help` which is a pointer to the
+// section of the specification that this test is exercising; `assert` which is an array of assertion description
+// that your test contains; and `author` which is simply the author of the test.
+test(function () {
+        assert_true(true, "The spec says it's true.");
+    }
+,   "True is true as per spec"
+,   {
+        help:   "http://w3.org/TR/some-specification#truth-and-beauty"
+    ,   assert: ["Truth is true, you know."]
+    ,   author: "Robin Berjon <robin@berjon.com>"
+    }
+);
 
 // ## Advanced Usage
-// format_value
-(function () {
-    
-}());
+// Most users should not need this section. Read it if you are trying to achieve something
+// complex that is not working, or if you are curious &mdash; but don't worry if it does not
+// seem to make much sense as oftentimes you will not need it.
+// ### Complex Setup
+// Sometimes it is important either to perform complex setup operations for a test run, or
+// to modify the overall behaviour of the test run, or both. These can be performed by using
+// the `setup(func, properties)`. Either of its arguments is optional, so it can also be called
+// as `setup(func)` and `setup(properties)`.
+//
+// Once the first test has run, any call to `setup()` is immediately short-circuited so none of
+// the examples in this section actually do anyting (you're expected to only have one `setup()`
+// anyway) but they are still useful for their illustrative value.
+
+// Essentially, anything that happens in `setup()`'s function (when used) stays in `setup()`'s
+// function. This allows massive failure to happen there and for the test to still attempt a run.
+setup(function () {
+    throw new Error("BOOM!");
+});
+
+// The `properties` parameter is a dictionary that can take four fields.
+
+// `timeout: ms`. This sets the timeout not for a single test (as with the other `timeout`
+// option) but rather for the entire set of tests in the page. You can use this if you are
+// concerned about the entire run being slow even though individual tests may not be triggering
+// their own timeouts.
+/* time out after 20 seconds */
+setup({ timeout: 20000 });
+
+// `explicit_done: true | false`. Normally, a test run is considered complete (and the report
+// generated, etc.) whenever the document's load event triggers and all synchronous tests have
+// reported values (or timed out), and if there are asynchronous tests when those have either
+// run or timed out as well. In other words, under normal operations the system knows how to
+// guess when a test run is complete and does not need you to tell it. You may wish to
+// override this behaviour if you are doing something that could confuse the system, such as
+// for instance asynchronously loading or generating new tests. If that is the case, then
+// set `explicit_done` to `true` and when you know you're done with all the tests you want
+// to run, call the global `done()` function yourself.
+setup({ explicit_done: true });
+/* ... at some point later... */
+done();
+
+// `output_document: Document`. By default the runner will log the test results inside an element
+// with an ID of `log` inside the same document that the tests are being run in. This works well
+// for the vast majority of cases, but in some situations you will want something different. The
+// test run document may be included in a larger one in which you would like to see the test to
+// appear, or you may wish to open a popup or new tab and write the results there. More typically,
+// if you are running tests inside an SVG document, providing a `log` element will do you little
+// good unless it can be rendered as HTML. In that case, you will want to redirect the output
+// to an HTML document. For all of those, just pass a Document object to `output_document`.
+setup({ output_document: window.parent.contentDocument });
+setup({ output_document: document.getElementById("someIFrame").contentDocument });
+
+// `explicit_timeout: true | false`. In some cases you don't want to handle timeouts yourself
+// at all (typically because your tests are being run in the context of a larger test runner
+// that is controlling timeouts on your behalf). If that is the case, then simply set
+// `explicit_timeout` to `true` and have whatever is in charge of controlling timeouts call
+// the global `timeout()` function directly.
+setup({ explicit_timeout: true });
+/* ... at some point later if there really is a time out... */
+timeout();
+
+// ### Formatting
+
+// At times when you wish to report issues in a test suite, or simply log something during development,
+// it can be very valueable to produce output that is more human-oriented than what `toString()` is
+// most likely to provide most of the time (there is only so much you can infer from `[object Object]`).
+// For those times, simply use the global `format_value(value)`. It knows how to format arrays (by recursing
+// into them), strings with control characters, JavaScript core types including negative zero, and the
+// more important DOM Node types.
+format_value(document);
+format_value("foo\nbar");
+format_value([-0, Infinity]);
 
 // ## Generating Tests
+// Writing tests can be a very repetitive endeavour. At times, you simply need to call the same assertion
+// on a long list of actual and expected values, and when that happens the overhead of the testing boilerplate,
+// no matter how lightweight it has been made to be, can seem overwhelming.
+
+// In order to make your life ever so simpler, `testharness.js` provides a very simple function that will call
+// the same assertion repeatedly on a list of actual and expected values each described by a name. The signature
+// for that is `generate_tests(assert_something, [ [name, actual, expected], ...])`.
+generate_tests(assert_equals, [
+                                [ "Square of 2", 2 * 2, 4 ]
+                            ,   [ "Square of 3", 3 * 3, 9 ]
+                            ,   [ "Square of 4", 4 * 4, 16 ]
+                            ,   [ "Square of 5", 5 * 5, 25 ]
+                            ,   [ "Square of 6", 6 * 6, 36 ]
+                            ]
+);
+
+// ## Callbacks
 (function () {
     
 }());
 
 // ## Writing Your Own Assertions
-(function () {
-    
-}());
-
-// ## Callbacks
 (function () {
     
 }());

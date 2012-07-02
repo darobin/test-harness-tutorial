@@ -1,11 +1,14 @@
 <!DOCTYPE html>  <html> <head>   <title>using-testharness.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               using-testharness.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p><!--</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*global test assert_true assert_false assert_equals assert_not_equals assert_in_array</span>
 <span class="cm">         assert_array_equals assert_approx_equals assert_regexp_match assert_own_property</span>
 <span class="cm">         assert_inherits assert_idl_attribute assert_readonly assert_throws assert_unreached</span>
-<span class="cm">         assert_object_equals async_test*/</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>--></p>
+<span class="cm">         assert_object_equals async_test setup format_value done timeout someIFrame</span>
+<span class="cm">         generate_tests*/</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>--></p>
 
 <script src='../js/testharness.js'></script>
 
 <script src='../js/move-log.js'></script>
+
+<iframe id='someIFrame' style='display: none'></iframe>
 
 <script src='../using-testharness.js'></script>
 
@@ -236,19 +239,95 @@ opposite makes use of that facility.</p>             </td>             <td class
 <span class="p">});</span>
 <span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span></pre></div>             </td>           </tr>                               <tr id="section-37">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-37">&#182;</a>               </div>               <p><a name='metadata'></a></p>
 
-<h2>Including Metadata</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    
-<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-38">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-38">&#182;</a>               </div>               <h2>Advanced Usage</h2>
+<h2>Including Metadata</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-38">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-38">&#182;</a>               </div>               <p>If you are writing tests for inclusion in the <a href="http://w3c-test.org/framework/app/">W3C Testing Framework</a>
+(and if you're writing those tests for a W3C group, then you really should), then this section can be
+of interest to you. If not, you can safely skip it.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-39">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-39">&#182;</a>               </div>               <p>In order to best integrate into the Testing Framework, your tests ought to have metadata. If you have only
+one test per HTML file, then your test metadata should be contained in the &lt;head> section of your
+document and, again, you can safely skip over this section. If, however, you wish to include an entire
+test suite in a single document (which you certainly can do) then it is useful to specify test metadata
+for every call to <code>test()</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-40">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-40">&#182;</a>               </div>               <p>This can be achieved very simply by providing the test metadata as part of the third parameter to <code>test()</code>
+which we have seen earlier. There are three fields that you can use: <code>help</code> which is a pointer to the
+section of the specification that this test is exercising; <code>assert</code> which is an array of assertion description
+that your test contains; and <code>author</code> which is simply the author of the test.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">test</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">assert_true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="s2">&quot;The spec says it&#39;s true.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">,</span>   <span class="s2">&quot;True is true as per spec&quot;</span>
+<span class="p">,</span>   <span class="p">{</span>
+        <span class="nx">help</span><span class="o">:</span>   <span class="s2">&quot;http://w3.org/TR/some-specification#truth-and-beauty&quot;</span>
+    <span class="p">,</span>   <span class="nx">assert</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;Truth is true, you know.&quot;</span><span class="p">]</span>
+    <span class="p">,</span>   <span class="nx">author</span><span class="o">:</span> <span class="s2">&quot;Robin Berjon &lt;robin@berjon.com&gt;&quot;</span>
+    <span class="p">}</span>
+<span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-41">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-41">&#182;</a>               </div>               <h2>Advanced Usage</h2>
 
-<p>format_value</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+<p>Most users should not need this section. Read it if you are trying to achieve something
+complex that is not working, or if you are curious &mdash; but don't worry if it does not
+seem to make much sense as oftentimes you will not need it.</p>
+
+<h3>Complex Setup</h3>
+
+<p>Sometimes it is important either to perform complex setup operations for a test run, or
+to modify the overall behaviour of the test run, or both. These can be performed by using
+the <code>setup(func, properties)</code>. Either of its arguments is optional, so it can also be called
+as <code>setup(func)</code> and <code>setup(properties)</code>.</p>
+
+<p>Once the first test has run, any call to <code>setup()</code> is immediately short-circuited so none of
+the examples in this section actually do anyting (you're expected to only have one <code>setup()</code>
+anyway) but they are still useful for their illustrative value.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-42">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-42">&#182;</a>               </div>               <p>Essentially, anything that happens in <code>setup()</code>'s function (when used) stays in <code>setup()</code>'s
+function. This allows massive failure to happen there and for the test to still attempt a run.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">setup</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;BOOM!&quot;</span><span class="p">);</span>
+<span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-43">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-43">&#182;</a>               </div>               <p>The <code>properties</code> parameter is a dictionary that can take four fields.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-44">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-44">&#182;</a>               </div>               <p><code>timeout: ms</code>. This sets the timeout not for a single test (as with the other <code>timeout</code>
+option) but rather for the entire set of tests in the page. You can use this if you are
+concerned about the entire run being slow even though individual tests may not be triggering
+their own timeouts.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/* time out after 20 seconds */</span>
+<span class="nx">setup</span><span class="p">({</span> <span class="nx">timeout</span><span class="o">:</span> <span class="mi">20000</span> <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-45">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-45">&#182;</a>               </div>               <p><code>explicit_done: true | false</code>. Normally, a test run is considered complete (and the report
+generated, etc.) whenever the document's load event triggers and all synchronous tests have
+reported values (or timed out), and if there are asynchronous tests when those have either
+run or timed out as well. In other words, under normal operations the system knows how to
+guess when a test run is complete and does not need you to tell it. You may wish to
+override this behaviour if you are doing something that could confuse the system, such as
+for instance asynchronously loading or generating new tests. If that is the case, then
+set <code>explicit_done</code> to <code>true</code> and when you know you're done with all the tests you want
+to run, call the global <code>done()</code> function yourself.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">setup</span><span class="p">({</span> <span class="nx">explicit_done</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+<span class="cm">/* ... at some point later... */</span>
+<span class="nx">done</span><span class="p">();</span></pre></div>             </td>           </tr>                               <tr id="section-46">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-46">&#182;</a>               </div>               <p><code>output_document: Document</code>. By default the runner will log the test results inside an element
+with an ID of <code>log</code> inside the same document that the tests are being run in. This works well
+for the vast majority of cases, but in some situations you will want something different. The
+test run document may be included in a larger one in which you would like to see the test to
+appear, or you may wish to open a popup or new tab and write the results there. More typically,
+if you are running tests inside an SVG document, providing a <code>log</code> element will do you little
+good unless it can be rendered as HTML. In that case, you will want to redirect the output
+to an HTML document. For all of those, just pass a Document object to <code>output_document</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">setup</span><span class="p">({</span> <span class="nx">output_document</span><span class="o">:</span> <span class="nb">window</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">contentDocument</span> <span class="p">});</span>
+<span class="nx">setup</span><span class="p">({</span> <span class="nx">output_document</span><span class="o">:</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;someIFrame&quot;</span><span class="p">).</span><span class="nx">contentDocument</span> <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-47">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-47">&#182;</a>               </div>               <p><code>explicit_timeout: true | false</code>. In some cases you don't want to handle timeouts yourself
+at all (typically because your tests are being run in the context of a larger test runner
+that is controlling timeouts on your behalf). If that is the case, then simply set
+<code>explicit_timeout</code> to <code>true</code> and have whatever is in charge of controlling timeouts call
+the global <code>timeout()</code> function directly.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">setup</span><span class="p">({</span> <span class="nx">explicit_timeout</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+<span class="cm">/* ... at some point later if there really is a time out... */</span>
+<span class="nx">timeout</span><span class="p">();</span></pre></div>             </td>           </tr>                               <tr id="section-48">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-48">&#182;</a>               </div>               <h3>Formatting</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-49">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-49">&#182;</a>               </div>               <p>At times when you wish to report issues in a test suite, or simply log something during development,
+it can be very valueable to produce output that is more human-oriented than what <code>toString()</code> is
+most likely to provide most of the time (there is only so much you can infer from <code>[object Object]</code>).
+For those times, simply use the global <code>format_value(value)</code>. It knows how to format arrays (by recursing
+into them), strings with control characters, JavaScript core types including negative zero, and the
+more important DOM Node types.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">format_value</span><span class="p">(</span><span class="nb">document</span><span class="p">);</span>
+<span class="nx">format_value</span><span class="p">(</span><span class="s2">&quot;foo\nbar&quot;</span><span class="p">);</span>
+<span class="nx">format_value</span><span class="p">([</span><span class="o">-</span><span class="mi">0</span><span class="p">,</span> <span class="kc">Infinity</span><span class="p">]);</span></pre></div>             </td>           </tr>                               <tr id="section-50">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-50">&#182;</a>               </div>               <h2>Generating Tests</h2>
+
+<p>Writing tests can be a very repetitive endeavour. At times, you simply need to call the same assertion
+on a long list of actual and expected values, and when that happens the overhead of the testing boilerplate,
+no matter how lightweight it has been made to be, can seem overwhelming.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-51">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-51">&#182;</a>               </div>               <p>In order to make your life ever so simpler, <code>testharness.js</code> provides a very simple function that will call
+the same assertion repeatedly on a list of actual and expected values each described by a name. The signature
+for that is <code>generate_tests(assert_something, [ [name, actual, expected], ...])</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">generate_tests</span><span class="p">(</span><span class="nx">assert_equals</span><span class="p">,</span> <span class="p">[</span>
+                                <span class="p">[</span> <span class="s2">&quot;Square of 2&quot;</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span> <span class="p">]</span>
+                            <span class="p">,</span>   <span class="p">[</span> <span class="s2">&quot;Square of 3&quot;</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span> <span class="p">]</span>
+                            <span class="p">,</span>   <span class="p">[</span> <span class="s2">&quot;Square of 4&quot;</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">16</span> <span class="p">]</span>
+                            <span class="p">,</span>   <span class="p">[</span> <span class="s2">&quot;Square of 5&quot;</span><span class="p">,</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">25</span> <span class="p">]</span>
+                            <span class="p">,</span>   <span class="p">[</span> <span class="s2">&quot;Square of 6&quot;</span><span class="p">,</span> <span class="mi">6</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">36</span> <span class="p">]</span>
+                            <span class="p">]</span>
+<span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-52">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-52">&#182;</a>               </div>               <h2>Callbacks</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     
-<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-39">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-39">&#182;</a>               </div>               <h2>Generating Tests</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-53">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-53">&#182;</a>               </div>               <h2>Writing Your Own Assertions</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     
-<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-40">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-40">&#182;</a>               </div>               <h2>Writing Your Own Assertions</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    
-<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-41">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-41">&#182;</a>               </div>               <h2>Callbacks</h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    
-<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-42">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-42">&#182;</a>               </div>               <h2>Results</h2>
+<span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-54">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-54">&#182;</a>               </div>               <h2>Results</h2>
 
 <p>As promised this is a self-runnable document that includes the results for the test suite
 specified by the code in the right column above. You can see the results below:</p>
