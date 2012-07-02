@@ -2,7 +2,7 @@
 /*global test assert_true assert_false assert_equals assert_not_equals assert_in_array
          assert_array_equals assert_approx_equals assert_regexp_match assert_own_property
          assert_inherits assert_idl_attribute assert_readonly assert_throws assert_unreached
-         assert_object_equals*/
+         assert_object_equals async_test*/
 // -->
 // <script src='../js/testharness.js'></script>
 // <script src='../js/move-log.js'></script>
@@ -281,9 +281,52 @@ test(function () {
 }, "Failed check on unreachability");
 
 // ## Asynchronous Testing
-(function () {
-    
-}());
+//
+// It is increasingly rare for Web APIs to be entirely synchronous. Many of the modern ones are very
+// careful to be asynchronous whenever an operation may take a little time and therefore freeze the
+// main thread. Testing asynchronous APIs is naturally different from testing synchronous code since
+// results from asynchronous calls by their very nature do not follow the nicely linear flow of
+// synchronous calls.
+//
+// Thankfully, `testharness.js` makes testing asynchronous APIs pretty much just as easy as testing
+// synchronous APIs, with all the assertions being the same and only some small details of how the
+// tests are set up being different. We will start with an example testing that setTimeout works.
+
+// First, instead of calling `test(func, name, options)` we call `async_test(name, options)` and
+// hold on to its return value &mdash; the latter is the object with which we will interact to
+// control the flow of our asynchronous test. As you can see, the `name` and `options` parameters
+// that `async_test()` accepts are exactly the same as those used by `test()`, and `options` is
+// just as optional.
+var stTest = async_test("Testing setTimeout()");
+
+// We will use our setTimeout call to perform an assertion, and flag that the test is over. This
+// will cancel the timeout and if the assertion is successful (in our case it trivially is) then
+// the test passes. This is performed with two operations: first, the `step()` method is used to
+// define the individual test to be run (just as with the first argument to `test()`); second, the
+// `done()` method is called to tell `testharness.js` that the entire test has run.
+setTimeout(function () {
+    stTest.step(function () {
+        assert_true(true, "Truth is asynchronously true.");
+    });
+    stTest.done();
+}, 10);
+
+// It is often the case that in testing asynchronous code one needs to assign event handlers to
+// specific `onfoo` fields of an object. This can be done with `step()` but it is somewhat cumbersome
+// since that call to `step()` needs itself to be wrapped inside a function. There is a shortcut
+// for precisely this usage: `step_func`. What it does is take a function exactly like `step()`
+// does, but returns a function that can be used directly as an event handler. The XHR example
+// opposite makes use of that facility.
+var xhrTest = async_test("Testing XHR access")
+,   xhr = new XMLHttpRequest()
+;
+xhr.open("GET", "using-testharness.html");
+xhr.onreadystatechange = xhrTest.step_func(function (ev) {
+    assert_true(ev.isTrusted, "readystatechange is a trusted event");
+    assert_false(ev.bubbles, "readystatechange is does not bubble");
+    xhrTest.done();
+});
+xhr.send();
 
 // <a name='metadata'></a>
 // ## Including Metadata
