@@ -490,7 +490,7 @@ function result_callback (res) {
 // `complete`. Happens when the test run has terminated (successfully or not). It receives an array
 // of `Test` objects just like the one passed to `result` corresponding to all the results, and
 // a status object describing the state of the entire run, which has a `status` field which can
-// be compared to the `OK`, `ERROR`, and `TIMEOUT` fields on any `Test` object and respectively
+// be compared to the `OK`, `ERROR`, and `TIMEOUT` fields on the same object and respectively
 // mean that the suite has entirely succeeded, that it has failed, or that there has been a
 // time out.
 /* in same context */

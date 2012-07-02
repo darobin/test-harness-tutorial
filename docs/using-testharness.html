@@ -362,7 +362,7 @@ and a <code>message</code> field providing the error message, if any.</p>       
 <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-54">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-54">&#182;</a>               </div>               <p><code>complete</code>. Happens when the test run has terminated (successfully or not). It receives an array
 of <code>Test</code> objects just like the one passed to <code>result</code> corresponding to all the results, and
 a status object describing the state of the entire run, which has a <code>status</code> field which can
-be compared to the <code>OK</code>, <code>ERROR</code>, and <code>TIMEOUT</code> fields on any <code>Test</code> object and respectively
+be compared to the <code>OK</code>, <code>ERROR</code>, and <code>TIMEOUT</code> fields on the same object and respectively
 mean that the suite has entirely succeeded, that it has failed, or that there has been a
 time out.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/* in same context */</span>
 <span class="nx">add_completion_callback</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">allRes</span><span class="p">,</span> <span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
