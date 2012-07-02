@@ -1,5 +1,7 @@
 // <!--
-/*global test assert_true assert_false*/
+/*global test assert_true assert_false assert_equals assert_not_equals assert_in_array
+         assert_array_equals assert_approx_equals assert_regexp_match assert_own_property
+         assert_inherits assert_idl_attribute assert_readonly assert_throws assert_unreached*/
 // -->
 // <script src='../js/testharness.js'></script>
 // <script src='../js/move-log.js'></script>
@@ -111,20 +113,87 @@ test(function () {
     assert_true(1 === 1, "One is really one");
 }, "Simple checks on truth");
 
-// `assert_false(actual, description)`
-// `assert_equals(actual, expected, description)`
-// `assert_not_equals(actual, expected, description)`
-// `assert_in_array(actual, expected, description)`
-// `assert_array_equals(actual, expected, description)`
-// `assert_approx_equals(actual, expected, epsilon, description)`
-// `assert_regexp_match(actual, expected, description)`
+// `assert_false(actual, description)` is the same as `assert_true` but in reverse. It
+// has the same strictness about its `actual` being JavaScript's `false` and not just
+// "falsy" (e.g. 0, null)
+test(function () {
+    assert_false(false, "Falsity is false");
+    assert_false(1 === 0, "One is not zero");
+}, "Simple checks on falsity");
+
+// `assert_equals(actual, expected, description)` checks that `actual` and `expected`
+// have the same value (without necessarily being the same object). Note that this
+// comparison is strict and that you should not rely on
+// whatever automatic type conversions that JavaScript may perform on comparisons.
+test(function () {
+    assert_equals("dahut", "da" + "hut", "String concatenation");
+    assert_equals(42, 6 * 7, "The ultimate answer");
+}, "Simple checks on equality");
+
+// `assert_not_equals(actual, expected, description)` is the reverse of `assert_equals`
+// and checks that its /actual/ and /expected/ are not the same. The same caveat on
+// comparison strictness applies, so that values that may seem very similar are still
+// not equal.
+test(function () {
+    assert_not_equals("dahut", "myth", "String comparison");
+    assert_not_equals(42, "42", "The ultimate answer");
+}, "Simple checks on unequality");
+
+// `assert_in_array(actual, expected, description)` checks that `actual` is in the array
+// provided in `expected`. Any odd member will do, but note that it will not recurse
+// into the array if it is multidimensional.
+test(function () {
+    assert_in_array("dahut", "chupacabra dahut unicorn".split(" "), "Dahut hunting");
+    assert_in_array(2017, [42, 47, 62, 2017] , "Lottery");
+}, "Simple checks on membership");
+
+// `assert_array_equals(actual, expected, description)` takes an array for both `actual`
+// and `expected`, and validates that they have the same length and that each item is
+// `assert_equals` its corresponding member in the other array. Just like the previous
+// assertion, this is unidimensional.
+test(function () {
+    assert_array_equals(["chupacabra", "dahut", "unicorn"], "chupacabra dahut unicorn".split(" "), "Dahut hunting");
+    assert_array_equals([4, 9, 16], [2, 3, 4].map(function (x) { return x * x; }), "Square");
+}, "Checks on identical membership");
+
+
+// `assert_approx_equals(actual, expected, epsilon, description)` takes a numerical `actual` value
+// and checks that it is within `epsilon` of `expected`. This is notably useful for floating point
+// calculations in which you know that some drift may occur and you need to check that the outcome
+// is within a given ballpark &mdash; but it can also be used in other cases.
+test(function () {
+    assert_approx_equals(Math.PI, 3.14, 0.01, "Roughly circular");
+    assert_approx_equals(42, 47, 5, "47 is almost 42");
+}, "Checks on epsilon equality");
+
+
+// `assert_regexp_match(actual, expected, description)` checks that `actual` matches the `expected`
+// regular expression. The latter can be as simple or complex as you wish to make it, and can be
+// created with flags.
+test(function () {
+    assert_regexp_match(document.title, /^\w{5}-\w{10,12}\.js$/, "That's my title");
+    assert_regexp_match("A", /a/i, "Matching lowercase");
+}, "Checks using regular expressions");
+
 // `assert_own_property(object, property_name, description)`
 // `assert_inherits(object, property_name, description)`
 // `assert_idl_attribute(object, attribute_name, description)`
 // `assert_readonly(object, property_name, description)`
 // `assert_throws(code, func, description)`
-// `assert_unreached(description)`
 
+// `assert_unreached(description)` is a very simple assertion the role of which is to
+// check that some code is indeed unreachable. It only takes a description, and simply
+// always throws its hands up in disgust whenever it is called. Opposite here you
+// can see a case in which it is successful (since untouched).
+test(function () {
+    if (true) return "where you came from";
+    assert_unreached("Can't Touch This");
+}, "Simple check on unreachability");
+
+// Whereas this one fails because the code reaches it.
+test(function () {
+    assert_unreached("Reaching where no coder has reached before");
+}, "Failed check on unreachability");
 
 // ## Asynchronous Testing
 (function () {

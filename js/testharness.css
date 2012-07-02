@@ -77,3 +77,6 @@ table#results span.actual {
     white-space:pre;
 }
 
+th {
+    text-align: left;
+}
