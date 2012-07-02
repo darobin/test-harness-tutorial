@@ -1,7 +1,8 @@
 // <!--
 /*global test assert_true assert_false assert_equals assert_not_equals assert_in_array
          assert_array_equals assert_approx_equals assert_regexp_match assert_own_property
-         assert_inherits assert_idl_attribute assert_readonly assert_throws assert_unreached*/
+         assert_inherits assert_idl_attribute assert_readonly assert_throws assert_unreached
+         assert_object_equals*/
 // -->
 // <script src='../js/testharness.js'></script>
 // <script src='../js/move-log.js'></script>
@@ -143,7 +144,9 @@ test(function () {
 // provided in `expected`. Any odd member will do, but note that it will not recurse
 // into the array if it is multidimensional.
 test(function () {
-    assert_in_array("dahut", "chupacabra dahut unicorn".split(" "), "Dahut hunting");
+    assert_in_array("dahut",
+                    "chupacabra dahut unicorn".split(" "),
+                    "Dahut hunting");
     assert_in_array(2017, [42, 47, 62, 2017] , "Lottery");
 }, "Simple checks on membership");
 
@@ -152,8 +155,12 @@ test(function () {
 // `assert_equals` its corresponding member in the other array. Just like the previous
 // assertion, this is unidimensional.
 test(function () {
-    assert_array_equals(["chupacabra", "dahut", "unicorn"], "chupacabra dahut unicorn".split(" "), "Dahut hunting");
-    assert_array_equals([4, 9, 16], [2, 3, 4].map(function (x) { return x * x; }), "Square");
+    assert_array_equals(["chupacabra", "dahut", "unicorn"],
+                        "chupacabra dahut unicorn".split(" "),
+                        "Dahut hunting");
+    assert_array_equals([4, 9, 16],
+                        [2, 3, 4].map(function (x) { return x * x; }),
+                        "Square");
 }, "Checks on identical membership");
 
 
@@ -171,15 +178,93 @@ test(function () {
 // regular expression. The latter can be as simple or complex as you wish to make it, and can be
 // created with flags.
 test(function () {
-    assert_regexp_match(document.title, /^\w{5}-\w{10,12}\.js$/, "That's my title");
+    assert_regexp_match(document.title,
+                        /^\w{5}-\w{10,12}\.js$/,
+                        "That's my title");
     assert_regexp_match("A", /a/i, "Matching lowercase");
 }, "Checks using regular expressions");
 
-// `assert_own_property(object, property_name, description)`
-// `assert_inherits(object, property_name, description)`
-// `assert_idl_attribute(object, attribute_name, description)`
-// `assert_readonly(object, property_name, description)`
-// `assert_throws(code, func, description)`
+// `assert_own_property(object, property_name, description)` checks that `object` has a property that
+// is truly its own (as opposed to inherited down the prototype chain). JavaScripters will recognise
+// this as checking `hasOwnProperty`. If you don't know about this important method, you can
+// [read up about it on MDN](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/hasOwnProperty).
+test(function () {
+    var gollum = { ring: "MIIIIINE!!!!" };
+    assert_own_property(gollum, "ring", "Tricksy hobbitses!");
+    /* this will fail even though `gollum` has `toString`. */
+    assert_own_property(gollum,
+                        "toString",
+                        "I have that property, but it'ssss not mine.");
+}, "Checks for property ownership");
+
+
+// `assert_inherits(object, property_name, description)` complements `assert_own_property` in that it
+// similarly checks that the attribute is available on the object, but asserts that it is *not* the
+// object's own property but rather has been inherited down the prototype chain.
+test(function () {
+    var gollum = { ring: "MIIIIINE!!!!" };
+    /* this will succeed here */
+    assert_inherits(gollum,
+                    "toString",
+                    "I have that property, but it'ssss not mine.");
+    assert_inherits(gollum,
+                    "hasOwnProperty",
+                    "This one works too.");
+}, "Checks for property inheritance");
+
+// `assert_idl_attribute(object, attribute_name, description)` is the same as
+// `assert_inherits` and simply aliases it. For clarity, you may be better off sticking
+// to the previous one.
+
+// `assert_readonly(object, property_name, description)` checks that the given `property_name`
+// on `object` is properly read-only and therefore cannot be set.
+test(function () {
+    assert_readonly(document, "nodeType", "You cannot change nodeType.");
+}, "Checks for attribute readonlyness");
+
+// `assert_throws(code, func, description)` is a powerful way of checking that code throws when
+// and how you expect it to, knowing that the code in `func` is what must trigger the exception.
+// This assertion works differently depending on what you pass for `code`.
+
+// If `code` is `null`, then any old exception will do (this is not a particularly recommended check as
+// the others are more useful).
+test(function () {
+    assert_throws("HierarchyRequestError",
+                  function () { document.appendChild(document); },
+                  "Specific DOM exception.");
+}, "Checks for exceptions (null)");
+
+// If `code` is any kind of object, then its `name` attribute is checked. That attribute must match the
+// `name` attribute on the exception being thrown. This means that you can pass a specific `DOMError`
+// object here and have it match if it's what is being thrown.
+test(function () {
+    assert_throws({ name: "Bad Kitten!" },
+                  function () { throw { name: "Bad Kitten!"}; },
+                  "Any exception with the right name.");
+}, "Checks for exceptions (object)");
+
+// If `code` is a string then it must be one of the commonly recognised `DOMError` names, and it checks
+// that `func` throws the corresponding `DOMError`. For compatibility with older browsers, the old
+// exception contacts are supported and mapped to the newer name; so for instance you can use
+// `WRONG_DOCUMENT_ERR` to mean `WrongDocumentError`. The latter style is preferred however.
+test(function () {
+    assert_throws("HierarchyRequestError",
+                  function () { document.appendChild(document); },
+                  "Specific DOM exception.");
+}, "Checks for exceptions (string)");
+
+// `assert_object_equals(actual, expected, description)` checks that two objects are equal by deep-walking
+// them side by side and making sure that they have the same fields and that those fields have the same
+// values. It is still considered somewhat experimental.
+test(function () {
+    assert_object_equals({ foo: "bar" },
+                         { foo: "bar" },
+                         "Simple objects.");
+    assert_object_equals({ top: "here", kids: { list: ["stuff", { leaf: true } ]} },
+                         { top: "here", kids: { list: ["stuff", { leaf: true } ]} },
+                         "Simple objects.");
+}, "Checks object deep-equality");
+
 
 // `assert_unreached(description)` is a very simple assertion the role of which is to
 // check that some code is indeed unreachable. It only takes a description, and simply
@@ -207,6 +292,7 @@ test(function () {
 }());
 
 // ## Advanced Usage
+// format_value
 (function () {
     
 }());
