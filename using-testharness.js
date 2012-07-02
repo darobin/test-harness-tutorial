@@ -3,7 +3,7 @@
          assert_array_equals assert_approx_equals assert_regexp_match assert_own_property
          assert_inherits assert_idl_attribute assert_readonly assert_throws assert_unreached
          assert_object_equals async_test setup format_value done timeout someIFrame
-         generate_tests add_start_callback add_result_callback add_complete_callback*/
+         generate_tests add_start_callback add_result_callback add_completion_callback*/
 // -->
 // <script src='../js/testharness.js'></script>
 // <script src='../js/move-log.js'></script>
@@ -494,11 +494,11 @@ function result_callback (res) {
 // mean that the suite has entirely succeeded, that it has failed, or that there has been a
 // time out.
 /* in same context */
-add_complete_callback(function (allRes, status) {
+add_completion_callback(function (allRes, status) {
     console.log("Test run completed", allRes, status);
 });
 /* in enclosing context */
-function complete_callback (allRes, status) {
+function completion_callback (allRes, status) {
     console.log("Test run completed", allRes, status);
 }
 

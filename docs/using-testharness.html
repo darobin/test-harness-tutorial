@@ -2,7 +2,7 @@
 <span class="cm">         assert_array_equals assert_approx_equals assert_regexp_match assert_own_property</span>
 <span class="cm">         assert_inherits assert_idl_attribute assert_readonly assert_throws assert_unreached</span>
 <span class="cm">         assert_object_equals async_test setup format_value done timeout someIFrame</span>
-<span class="cm">         generate_tests add_start_callback add_result_callback add_complete_callback*/</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>--></p>
+<span class="cm">         generate_tests add_start_callback add_result_callback add_completion_callback*/</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>--></p>
 
 <script src='../js/testharness.js'></script>
 
@@ -365,11 +365,11 @@ a status object describing the state of the entire run, which has a <code>status
 be compared to the <code>OK</code>, <code>ERROR</code>, and <code>TIMEOUT</code> fields on any <code>Test</code> object and respectively
 mean that the suite has entirely succeeded, that it has failed, or that there has been a
 time out.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/* in same context */</span>
-<span class="nx">add_complete_callback</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">allRes</span><span class="p">,</span> <span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">add_completion_callback</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">allRes</span><span class="p">,</span> <span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Test run completed&quot;</span><span class="p">,</span> <span class="nx">allRes</span><span class="p">,</span> <span class="nx">status</span><span class="p">);</span>
 <span class="p">});</span>
 <span class="cm">/* in enclosing context */</span>
-<span class="kd">function</span> <span class="nx">complete_callback</span> <span class="p">(</span><span class="nx">allRes</span><span class="p">,</span> <span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">function</span> <span class="nx">completion_callback</span> <span class="p">(</span><span class="nx">allRes</span><span class="p">,</span> <span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Test run completed&quot;</span><span class="p">,</span> <span class="nx">allRes</span><span class="p">,</span> <span class="nx">status</span><span class="p">);</span>
 <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-55">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-55">&#182;</a>               </div>               <!--
 ## Writing Your Own Assertions
