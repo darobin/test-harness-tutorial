@@ -509,4 +509,10 @@ function completion_callback (allRes, status) {
 // As promised this is a self-runnable document that includes the results for the test suite
 // specified by the code in the right column above. You can see the results below:
 //
+// <p>
+//  <a href="http://mobiwebapp.eu/"><img alt="MobiWebApp logo" src="http://www.w3.org/2010/09/logomobiwebapp-s.png"></a><br/>
+//  This project is funded by the European Union through the Seventh Framework Programme (FP7/2010-2012) under grant
+//  agreement n°257800 - <a href="http://mobiwebapp.eu/">Mobile Web Applications</a> (MobiWebApp).
+// </p>
+//
 // <div id='log'></div>
