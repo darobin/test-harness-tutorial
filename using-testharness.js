@@ -125,7 +125,7 @@ test(function () {
 }, "Simple checks on falsity");
 
 // `assert_equals(actual, expected, description)` checks that `actual` and `expected`
-// have the same value (without necessarily being the same object). Note that this
+// have the same value (and are in fact the same object). Note that this
 // comparison is strict and that you should not rely on
 // whatever automatic type conversions that JavaScript may perform on comparisons.
 test(function () {
