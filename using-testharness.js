@@ -320,15 +320,19 @@ setTimeout(function () {
 // does, but returns a function that can be used directly as an event handler. The XHR example
 // opposite makes use of that facility.
 var xhrTest = async_test("Testing XHR access")
-,   xhr = new XMLHttpRequest()
+,   xhr
 ;
-xhr.open("GET", "using-testharness.html");
-xhr.onreadystatechange = xhrTest.step_func(function (ev) {
-    assert_true(ev.isTrusted, "readystatechange is a trusted event");
-    assert_false(ev.bubbles, "readystatechange is does not bubble");
-    xhrTest.done();
+/* this in a step because it could throw */
+xhrTest.step(function () {
+    xhr = new XMLHttpRequest();
+    xhr.open("GET", "using-testharness.html");
+    xhr.onreadystatechange = xhrTest.step_func(function (ev) {
+        assert_true(ev.isTrusted, "readystatechange is a trusted event");
+        assert_false(ev.bubbles, "readystatechange is does not bubble");
+        xhrTest.done();
+    });
+    xhr.send();
 });
-xhr.send();
 
 // <a name='metadata'></a>
 // ## Including Metadata
