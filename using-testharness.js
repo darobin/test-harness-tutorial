@@ -41,6 +41,7 @@
 //
 //       <script src='/resources/testharness.js'></script>
 //       <script src='/resources/testharnessreport.js'></script>
+//       <link rel='stylesheet' href='/resource/testharness.css'>
 //
 // At which point you might rightfully ask why there are two files. The reason for this is
 // simple: the first one is the actual implementations, and the second one is empty. Why
