@@ -237,7 +237,7 @@ test(function () {
 }, "Checks for exceptions (null)");
 
 // If `code` is any kind of object, then its `name` attribute is checked. That attribute must match the
-// `name` attribute on the exception being thrown. This means that you can pass a specific `DOMError`
+// `name` attribute on the exception being thrown. This means that you can pass a specific `DOMException`
 // object here and have it match if it's what is being thrown.
 test(function () {
     assert_throws({ name: "Bad Kitten!" },
@@ -245,8 +245,8 @@ test(function () {
                   "Any exception with the right name.");
 }, "Checks for exceptions (object)");
 
-// If `code` is a string then it must be one of the commonly recognised `DOMError` names, and it checks
-// that `func` throws the corresponding `DOMError`. For compatibility with older browsers, the old
+// If `code` is a string then it must be one of the commonly recognised `DOMException` names, and it checks
+// that `func` throws the corresponding `DOMException`. For compatibility with older browsers, the old
 // exception contacts are supported and mapped to the newer name; so for instance you can use
 // `WRONG_DOCUMENT_ERR` to mean `WrongDocumentError`. The latter style is preferred however.
 test(function () {
