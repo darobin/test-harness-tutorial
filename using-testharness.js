@@ -39,8 +39,8 @@
 // own copy and set it up locally whichever way you want, or if you're writing a test for
 // a W3C service you should just point to the W3C copy:
 //
-//       <script src='http://w3c-test.org/resources/testharness.js'></script>
-//       <script src='http://w3c-test.org/resources/testharnessreport.js'></script>
+//       <script src='/resources/testharness.js'></script>
+//       <script src='/resources/testharnessreport.js'></script>
 //
 // At which point you might rightfully ask why there are two files. The reason for this is
 // simple: the first one is the actual implementations, and the second one is empty. Why
@@ -337,7 +337,7 @@ xhrTest.step(function () {
 // <a name='metadata'></a>
 // ## Including Metadata
 
-// If you are writing tests for inclusion in the [W3C Testing Framework](http://w3c-test.org/framework/app/)
+// If you are writing tests for inclusion in the [W3C Testing Framework](http://w3c-test.org/framework/)
 // (and if you're writing those tests for a W3C group, then you really should), then this section can be
 // of interest to you. If not, you can safely skip it.
 
