@@ -401,6 +401,10 @@ setup({ timeout: 20000 });
 // for instance asynchronously loading or generating new tests. If that is the case, then
 // set `explicit_done` to `true` and when you know you're done with all the tests you want
 // to run, call the global `done()` function yourself.
+//
+// It is important to note that if you wish to use `explicit_done` you *must* set it to true
+// *before* the load event triggers. Otherwise, you will spend a lot of time wondering why
+// nothing is working in the way you expect.
 setup({ explicit_done: true });
 /* ... at some point later... */
 done();
