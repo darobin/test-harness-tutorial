@@ -349,17 +349,24 @@ xhrTest.step(function () {
 // for every call to `test()`.
 
 // This can be achieved very simply by providing the test metadata as part of the third parameter to `test()`
-// which we have seen earlier. There are three fields that you can use: `help` which is a pointer to the
-// section of the specification that this test is exercising; `assert` which is an array of assertion description
-// that your test contains; and `author` which is simply the author of the test.
+// which we have seen earlier. There are four fields that you can use: `help` which is a pointer to the
+// section of the specification that this test is exercising; `assert` which is a description of what your
+// test is asserting; `author` which is simply the author of the test; and `flags` which is a space separated
+// list of flags specific to this test. Each of these fields will accept a sinlge string or an array of
+// strings if there are multiple values. The `author` field should contain the author's name and contact
+// URL, either http(s):, or <email@domain>. See the test suite's documentation for a list of valid flags.
+// All metadata provided per test will be added to any file-scoped metadata found in the &lt;head> section
+// of the document. Metadata that is common to all tests in a file should be placed in the &lt;head>.
 test(function () {
         assert_true(true, "The spec says it's true.");
     }
 ,   "True is true as per spec"
 ,   {
-        help:   "http://w3.org/TR/some-specification#truth-and-beauty"
-    ,   assert: ["Truth is true, you know."]
+        help:   ["http://www.w3.org/TR/some-specification/#truth-and-beauty", 
+                 "http://www.w3.org/TR/other-specification/#truthiness"]
+    ,   assert: "Truth is true, you know."
     ,   author: "Robin Berjon <robin@berjon.com>"
+    ,   flags: "svg animated"
     }
 );
 
