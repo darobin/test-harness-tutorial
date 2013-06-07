@@ -43,7 +43,7 @@ a W3C service you should just point to the W3C copy:</p>
 
 <pre><code>  &lt;script src='/resources/testharness.js'&gt;&lt;/script&gt;
   &lt;script src='/resources/testharnessreport.js'&gt;&lt;/script&gt;
-  &lt;link rel='stylesheet' href='/resources/testharness.css'&gt;
+  &lt;link rel='stylesheet' href='/resource/testharness.css'&gt;
 </code></pre>
 
 <p>At which point you might rightfully ask why there are two files. The reason for this is
@@ -256,16 +256,23 @@ one test per HTML file, then your test metadata should be contained in the &lt;h
 document and, again, you can safely skip over this section. If, however, you wish to include an entire
 test suite in a single document (which you certainly can do) then it is useful to specify test metadata
 for every call to <code>test()</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-39">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-39">&#182;</a>               </div>               <p>This can be achieved very simply by providing the test metadata as part of the third parameter to <code>test()</code>
-which we have seen earlier. There are three fields that you can use: <code>help</code> which is a pointer to the
-section of the specification that this test is exercising; <code>assert</code> which is an array of assertion description
-that your test contains; and <code>author</code> which is simply the author of the test.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">test</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+which we have seen earlier. There are four fields that you can use: <code>help</code> which is a pointer to the
+section of the specification that this test is exercising; <code>assert</code> which is a description of what your
+test is asserting; <code>author</code> which is simply the author of the test; and <code>flags</code> which is a space separated
+list of flags specific to this test. Each of these fields will accept a sinlge string or an array of
+strings if there are multiple values. The <code>author</code> field should contain the author's name and contact
+URL, either http(s):, or <email@domain>. See the test suite's documentation for a list of valid flags.
+All metadata provided per test will be added to any file-scoped metadata found in the &lt;head> section
+of the document. Metadata that is common to all tests in a file should be placed in the &lt;head>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">test</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="nx">assert_true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="s2">&quot;The spec says it&#39;s true.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">,</span>   <span class="s2">&quot;True is true as per spec&quot;</span>
 <span class="p">,</span>   <span class="p">{</span>
-        <span class="nx">help</span><span class="o">:</span>   <span class="s2">&quot;http://w3.org/TR/some-specification#truth-and-beauty&quot;</span>
-    <span class="p">,</span>   <span class="nx">assert</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;Truth is true, you know.&quot;</span><span class="p">]</span>
+        <span class="nx">help</span><span class="o">:</span>   <span class="p">[</span><span class="s2">&quot;http://www.w3.org/TR/some-specification/#truth-and-beauty&quot;</span><span class="p">,</span> 
+                 <span class="s2">&quot;http://www.w3.org/TR/other-specification/#truthiness&quot;</span><span class="p">]</span>
+    <span class="p">,</span>   <span class="nx">assert</span><span class="o">:</span> <span class="s2">&quot;Truth is true, you know.&quot;</span>
     <span class="p">,</span>   <span class="nx">author</span><span class="o">:</span> <span class="s2">&quot;Robin Berjon &lt;robin@berjon.com&gt;&quot;</span>
+    <span class="p">,</span>   <span class="nx">flags</span><span class="o">:</span> <span class="s2">&quot;svg animated&quot;</span>
     <span class="p">}</span>
 <span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-40">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-40">&#182;</a>               </div>               <h2>Advanced Usage</h2>
 
