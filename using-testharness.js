@@ -343,10 +343,16 @@ xhrTest.step(function () {
 // of interest to you. If not, you can safely skip it.
 
 // In order to best integrate into the Testing Framework, your tests ought to have metadata. If you have only
-// one test per HTML file, then your test metadata should be contained in the &lt;head> section of your
+// one test per HTML file, then your test metadata should be contained in the &lt;head&gt; section of your
 // document and, again, you can safely skip over this section. If, however, you wish to include an entire
 // test suite in a single document (which you certainly can do) then it is useful to specify test metadata
 // for every call to `test()`.
+
+<head>
+	<link rel='help' title='["http://www.w3.org/TR/some-specification/#truth-and-beauty", "http://www.w3.org/TR/other-specification/#truthiness"]'>
+	<link rel='author' title='Robin Berjon <robin@berjon.com>'>
+	<link rel='flags' title='svg animated'>
+</head>
 
 // This can be achieved very simply by providing the test metadata as part of the third parameter to `test()`
 // which we have seen earlier. There are four fields that you can use: `help` which is a pointer to the
@@ -354,9 +360,12 @@ xhrTest.step(function () {
 // test is asserting; `author` which is simply the author of the test; and `flags` which is a space separated
 // list of flags specific to this test. Each of these fields will accept a sinlge string or an array of
 // strings if there are multiple values. The `author` field should contain the author's name and contact
-// URL, either http(s):, or <email@domain>. See the test suite's documentation for a list of valid flags.
-// All metadata provided per test will be added to any file-scoped metadata found in the &lt;head> section
-// of the document. Metadata that is common to all tests in a file should be placed in the &lt;head>.
+// URL, either http(s):, or &lt;email@domain&gt;. See the test suite's documentation for a list of valid flags.
+// All metadata provided per test will be added to any file-scoped metadata found in the &lt;head&gt; section
+// of the document. Metadata that is common to all tests in a file should be placed in the &lt;head&gt;.
+
+
+
 test(function () {
         assert_true(true, "The spec says it's true.");
     }
