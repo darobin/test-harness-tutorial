@@ -338,7 +338,7 @@ xhrTest.step(function () {
 // <a name='metadata'></a>
 // ## Including Metadata
 
-// If you are writing tests for inclusion in the [W3C Testing Framework](http://w3c-test.org/framework/)
+// If you are writing tests for inclusion in the [W3C Web Platform Tests](https://github.com/w3c/web-platform-tests)
 // (and if you're writing those tests for a W3C group, then you really should), then this section can be
 // of interest to you. If not, you can safely skip it.
 
